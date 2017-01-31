@@ -43,8 +43,19 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let mapViewController = MapViewController()
+        let size = locationList.count
+        mapViewController.location = locationList[size-indexPath.row-1].location
+        navigationController?.pushViewController(mapViewController, animated: true)
+    }
+    
     func reloadTable() {
         locationTableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        reloadTable()
     }
     
     override func didReceiveMemoryWarning() {
