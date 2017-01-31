@@ -6,6 +6,9 @@
 //  Copyright © 2017 org.adiproject. All rights reserved.
 //
 
+/*
+ * Packages location data with time spent at location and distance travelled to get to location
+ */
 import Foundation
 import CoreLocation
 

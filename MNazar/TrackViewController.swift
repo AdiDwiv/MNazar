@@ -11,8 +11,6 @@ import CoreLocation
 
 class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableViewDataSource, UITableViewDelegate {
     
-    var textView: UITextView!
-    //---====----
     var locationManager: CLLocationManager!
     
     var locationTableView: UITableView!

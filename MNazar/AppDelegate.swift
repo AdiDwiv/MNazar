@@ -50,12 +50,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.startUpdatingLocation()
     }
-    
+    /*
+     * Called whenever phone receives a location
+     */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         if let location = locations.last {
             if loggedIn {
-                let hourDiff =  getMinuteDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp) // getHourDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp)
+                let hourDiff = getHourDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp)
                 let distance = location.distance(from: lastLoggedLocation)
                 if hourDiff >= 1 || distance >= 200 {
                     if locationManager.desiredAccuracy == kCLLocationAccuracyThreeKilometers {
@@ -73,31 +75,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    /*
+     * Checks properties of location and either adds to time spent if there is no significant change
+     * or logs a new location
+     */
     func updateLocation(location: CLLocation, distance: CLLocationDistance, hourDiff: Int) {
     
         if distance <= 200 && hourDiff >= 1 {
             if let location1 = trackViewController.locationList.last {
                 location1.timeAtLocation += hourDiff
-                print(hourDiff)
+                print(location1.timeAtLocation)
             }
         } else {
                 if distance >= 200 {
                 trackViewController.totalDistance += distance
             }
             trackViewController.locationList.append(LocationData(location: location, distanceTravelled: trackViewController.totalDistance))
+            lastLoggedLocation = location
             print("Location updated")
         }
         
        // sendDataToServer(location: location)
         
         trackViewController.reloadTable()
-        lastLoggedLocation = location
-        
     }
     
     
     /*
-     * Code for server call
+     * Code for pushing data to server
      * Call to function is commented out as developer does not have functioning server.
      */
     func sendDataToServer(location: CLLocation, locationList: [LocationData]!) {
@@ -140,7 +145,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    
+    /*
+     * Toggles accuracy of CLLocationManager for power optimization
+     */
     func toggleAccuracy() {
         switch locationManager.desiredAccuracy {
         case kCLLocationAccuracyBest:
@@ -152,6 +159,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
+    /*
+     * Gets difference between two Date objects in hours
+     */
     func getHourDifference(date1: Date, date2: Date) -> Int {
         return Calendar.current.dateComponents([.hour], from: date1, to: date2).hour ?? 0
     }

@@ -58,8 +58,13 @@ class TrackTableViewCell: UITableViewCell {
     func setup(labelDate: Date, colorcodeTime: Int, distance: String) {
         let requestedComponents: Set<Calendar.Component> = [.hour, .minute]
         let timeComponents = Calendar.current.dateComponents(requestedComponents, from: labelDate)
-        
-        let label = String(timeComponents.hour!) + ":" + String(timeComponents.minute!)
+        var label = ""
+        if let hours = timeComponents.hour {
+            label += hours/10 < 1 ? "0" + String(hours) : String(hours)
+        }
+        if let minutes = timeComponents.minute {
+            label += minutes/10 < 1 ? ":0" + String(minutes) : ":" + String(minutes)
+        }
         timeLabel.text = "At "+label
         distanceLabel.text = "Distance: "+distance
         if colorcodeTime <= 2 {
