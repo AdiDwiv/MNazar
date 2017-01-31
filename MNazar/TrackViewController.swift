@@ -18,16 +18,24 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
     var totalDistance: CLLocationDistance = 0
     
     var logoLabel: UILabel!
+    var logoImageView: UIImageView!
     var empCodeTextField: UITextField!
     var passwordTextField: UITextField!
     var password: String!
     var loginButton: UIButton!
     
+    var employeeCode: String!
+    var colorPalette = ColorPalette()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         edgesForExtendedLayout = []
-        title = "Login"
-        view.backgroundColor = .white
+        view.backgroundColor = colorPalette.colorText
+        
+        navigationController?.navigationBar.barTintColor = colorPalette.colorPrimaryDarker
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: colorPalette.colorText]
+        tabBarController?.tabBar.barTintColor = colorPalette.colorPrimaryDark
+        tabBarController?.tabBar.tintColor = colorPalette.colorTextBox
         
         //post-login table
         locationTableView = UITableView(frame: view.frame)
@@ -38,65 +46,99 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         //pre-login screen
         logoLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.75, height: view.frame.height*0.20))
-        logoLabel.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.25)
+        logoLabel.center = CGPoint(x: view.frame.width*0.35, y: view.frame.height*0.30)
         logoLabel.text = "mNazar"
-        logoLabel.textColor = .blue
-        logoLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        logoLabel.textColor = colorPalette.colorPrimaryDarker
+        logoLabel.font = UIFont.boldSystemFont(ofSize: 65)
+        logoLabel.backgroundColor = UIColor.white.withAlphaComponent(0)
         logoLabel.textAlignment = .center
         
+        logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.25, height: view.frame.height*0.10))
+        logoImageView.center = CGPoint(x: view.frame.width*0.80, y: view.frame.height*0.30)
+        logoImageView.image = UIImage(named: "location_logo.png")
+        
         empCodeTextField = UITextField(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.85, height: view.frame.height*0.05))
-        empCodeTextField.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.50)
-        empCodeTextField.placeholder = "Employee code"
+        empCodeTextField.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.55)
+        empCodeTextField.attributedPlaceholder =  NSAttributedString(string: "Employee code", attributes: [NSForegroundColorAttributeName: colorPalette.colorText.withAlphaComponent(0.85)])
         empCodeTextField.layer.borderWidth = 0.25
         empCodeTextField.layer.cornerRadius = 8
         empCodeTextField.backgroundColor = UIColor.white.withAlphaComponent(0.35)
         empCodeTextField.font = UIFont.boldSystemFont(ofSize: 16)
         empCodeTextField.delegate = self
+        empCodeTextField.backgroundColor = colorPalette.colorPrimaryDarker
+        empCodeTextField.textAlignment = .center
+        empCodeTextField.textColor = colorPalette.colorText
         
         passwordTextField = UITextField(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.85, height: view.frame.height*0.05))
-        passwordTextField.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.56)
-        passwordTextField.placeholder = "Password"
+        passwordTextField.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.625)
+        passwordTextField.attributedPlaceholder =  NSAttributedString(string: "Password", attributes: [NSForegroundColorAttributeName: colorPalette.colorText.withAlphaComponent(0.85)])
         passwordTextField.layer.borderWidth = 0.25
         passwordTextField.layer.cornerRadius = 8
         passwordTextField.backgroundColor = UIColor.white.withAlphaComponent(0.35)
         passwordTextField.font = UIFont.boldSystemFont(ofSize: 16)
         passwordTextField.delegate = self
         passwordTextField.addTarget(self, action: #selector(passwordFieldChanged), for: .editingChanged)
+        passwordTextField.backgroundColor = colorPalette.colorPrimaryDarker
+        passwordTextField.textAlignment = .center
+        passwordTextField.textColor = colorPalette.colorText
         password = ""
         
         loginButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.15, height: view.frame.height*0.05))
         loginButton.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.75)
-        loginButton.setTitleColor(.white, for: .normal)
-        loginButton.backgroundColor = .blue
+        loginButton.setTitleColor(colorPalette.colorText, for: .normal)
+        loginButton.backgroundColor = colorPalette.colorPrimaryDark
         loginButton.setTitle("Login", for: .normal)
         loginButton.layer.cornerRadius = 8
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
         
-        view.addSubview(logoLabel)
-        view.addSubview(empCodeTextField)
-        view.addSubview(passwordTextField)
-        view.addSubview(loginButton)
-        view.backgroundColor = .lightGray
+        addLoginElements()
     }
     
     func login() {
-        var empCode = ""
+        
         if let text1 = empCodeTextField.text {
-            empCode = text1
+            employeeCode = text1
         }
-        if empCode.characters.count>0 && password.characters.count>0 {
+        if employeeCode.characters.count>0 && password.characters.count>0 {
             UIView.animate(withDuration: 0.5, animations: {
                 self.logoLabel.removeFromSuperview()
                 self.empCodeTextField.removeFromSuperview()
                 self.passwordTextField.removeFromSuperview()
                 self.loginButton.removeFromSuperview()
+                self.logoImageView.removeFromSuperview()
                 self.view.backgroundColor = .white
             }, completion: { _ in
                 self.title = "Your locations"
                 self.view.addSubview(self.locationTableView)
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(self.logout))
+                self.navigationItem.rightBarButtonItem?.tintColor = self.colorPalette.colorTextBox
                 self.locationManager.startUpdatingLocation()
             })
         }
+    }
+    
+    func addLoginElements() {
+        empCodeTextField.text = ""
+        passwordTextField.text = ""
+        view.addSubview(logoLabel)
+        view.addSubview(empCodeTextField)
+        view.addSubview(passwordTextField)
+        view.addSubview(loginButton)
+        view.addSubview(logoImageView)
+        title = "Login"
+    }
+    
+    func logout() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.locationTableView.removeFromSuperview()
+            self.locationManager.stopUpdatingLocation()
+            self.view.backgroundColor = self.colorPalette.colorText
+            self.navigationItem.rightBarButtonItem = nil
+        }, completion: { _ in
+            self.password = ""
+            self.employeeCode = ""
+            self.addLoginElements()
+        })
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -114,7 +156,8 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let mapViewController = MapViewController()
         let size = locationList.count
-        mapViewController.location = locationList[size-indexPath.row-1].location
+        mapViewController.locationData = locationList[size-indexPath.row-1]
+        mapViewController.employeeCode = employeeCode
         navigationController?.pushViewController(mapViewController, animated: true)
     }
     
@@ -147,5 +190,9 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
+    }
+    
+    func sizeOfList() -> Int {
+        return locationList.count
     }
 }

@@ -25,6 +25,7 @@
 		400C80FB1E40DCF30025B1BC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400C80FA1E40DCF30025B1BC /* QuartzCore.framework */; };
 		400C80FD1E40DCFD0025B1BC /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400C80FC1E40DCFD0025B1BC /* SystemConfiguration.framework */; };
 		400C80FF1E40DD040025B1BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400C80FE1E40DD040025B1BC /* UIKit.framework */; };
+		400C81011E413B490025B1BC /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400C81001E413B490025B1BC /* ColorPalette.swift */; };
 		40A3A95F1E3A923100316F51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A3A95E1E3A923100316F51 /* AppDelegate.swift */; };
 		40A3A9661E3A923100316F51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A3A9651E3A923100316F51 /* Assets.xcassets */; };
 		40A3A9691E3A923100316F51 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40A3A9671E3A923100316F51 /* LaunchScreen.storyboard */; };
@@ -53,6 +54,7 @@
 		400C80FA1E40DCF30025B1BC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		400C80FC1E40DCFD0025B1BC /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		400C80FE1E40DD040025B1BC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		400C81001E413B490025B1BC /* ColorPalette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 		40A3A95B1E3A923100316F51 /* MNazar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MNazar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A3A95E1E3A923100316F51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		40A3A9651E3A923100316F51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				40AF2B871E3FECDD002AC645 /* LocationData.swift */,
 				40AF2B8B1E3FF4AC002AC645 /* TrackTableViewCell.swift */,
 				400C80D91E40D9E70025B1BC /* MapViewController.swift */,
+				400C81001E413B490025B1BC /* ColorPalette.swift */,
 				400C80E11E40DB9B0025B1BC /* GoogleMaps.bundle */,
 				400C80DF1E40DB1E0025B1BC /* GoogleMapsCore.framework */,
 				400C80DD1E40DB0B0025B1BC /* GoogleMaps.framework */,
@@ -223,6 +226,7 @@
 				40AF2B8C1E3FF4AC002AC645 /* TrackTableViewCell.swift in Sources */,
 				40AF2B881E3FECDD002AC645 /* LocationData.swift in Sources */,
 				40A3A9711E3A927800316F51 /* TrackViewController.swift in Sources */,
+				400C81011E413B490025B1BC /* ColorPalette.swift in Sources */,
 				400C80DA1E40D9E70025B1BC /* MapViewController.swift in Sources */,
 				40A3A95F1E3A923100316F51 /* AppDelegate.swift in Sources */,
 			);

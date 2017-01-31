@@ -13,7 +13,7 @@ import Foundation
 import CoreLocation
 
 class LocationData {
-
+    
     var location: CLLocation!
     var timeAtLocation: Int
     var distanceTravelled: CLLocationDistance

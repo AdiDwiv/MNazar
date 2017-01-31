@@ -50,8 +50,9 @@ class TrackTableViewCell: UITableViewCell {
         logoImageView.frame =  CGRect(x: frame.width*0.05, y: 0, width: frame.width*0.1, height: frame.height*0.5)
         logoImageView.center.y = frame.height*0.5
         
-        timeColorImageView.frame =  CGRect(x: frame.width*0.85, y: 0, width: frame.width*0.125, height: frame.width*0.125)
-        timeColorImageView.layer.cornerRadius = 10.0
+        timeColorImageView.frame =  CGRect(x: frame.width*0.85, y: 0, width: frame.width*0.075, height: frame.width*0.075)
+        timeColorImageView.layer.cornerRadius = timeColorImageView.bounds.size.width/2
+        timeColorImageView.layer.masksToBounds = true
         timeColorImageView.center.y = frame.height*0.5
     }
     
@@ -68,13 +69,13 @@ class TrackTableViewCell: UITableViewCell {
         timeLabel.text = "At "+label
         distanceLabel.text = "Distance: "+distance
         if colorcodeTime <= 2 {
-            timeColorImageView.backgroundColor = .green
+            timeColorImageView.backgroundColor = UIColor.green.withAlphaComponent(0.5)
         }
         else if colorcodeTime <= 4 {
-            timeColorImageView.backgroundColor = .yellow
+            timeColorImageView.backgroundColor = UIColor.yellow.withAlphaComponent(0.5)
         }
         else {
-            timeColorImageView.backgroundColor = .red
+            timeColorImageView.backgroundColor = UIColor.red.withAlphaComponent(0.5)
         }
     }
     

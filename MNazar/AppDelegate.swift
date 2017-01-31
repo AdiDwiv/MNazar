@@ -9,6 +9,7 @@
 import UIKit
 import  CoreLocation
 import GoogleMaps
+import SystemConfiguration
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
@@ -16,12 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var window: UIWindow?
     var locationManager: CLLocationManager!
     var loggedIn: Bool = false
+    var locationStackTop : Int = -1
     
     var lastLoggedLocation: CLLocation!
 
     var trackViewController: TrackViewController!
     
-    var textView: UITextView!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -52,11 +53,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.startUpdatingLocation()
     }
+    
+    /*
+     * Gets difference between two Date objects in hours
+     */
+    func getHourDifference(date1: Date, date2: Date) -> Int {
+        return Calendar.current.dateComponents([.hour], from: date1, to: date2).hour ?? 0
+    }
+    
     /*
      * Called whenever phone receives a location
      */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
+        print(isConnectedToInternet())
         if let location = locations.last {
             if loggedIn {
                 let hourDiff = getHourDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp)
@@ -80,6 +89,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     /*
      * Checks properties of location and either adds to time spent if there is no significant change
      * or logs a new location
+     * Sends data to server only if interent is connected
+     * locationStackTop stores index in locationList upto which data has been sent to the server
      */
     func updateLocation(location: CLLocation, distance: CLLocationDistance, hourDiff: Int) {
     
@@ -93,12 +104,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 trackViewController.totalDistance += distance
             }
             trackViewController.locationList.append(LocationData(location: location, distanceTravelled: trackViewController.totalDistance))
-            lastLoggedLocation = location
             print("Location updated")
         }
         
-       // sendDataToServer(location: location)
+        // Sends locally stored data to server only when interent is connected
+        // location
+        if isConnectedToInternet() {
+            while locationStackTop < trackViewController.sizeOfList()-1 {
+                locationStackTop += 1
+                if let location = trackViewController.locationList[locationStackTop].location {
+                    // sendDataToServer(location: location)
+                }
+            }
+        }
         
+        lastLoggedLocation = location
         trackViewController.reloadTable()
     }
     
@@ -148,6 +168,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     /*
+     * Returns true if device is connected to the internet
+     * THe code in this function has been taken after some modification from
+     * https://github.com/Isuru-Nanayakkara/Reach/blob/master/Reach-swift3.0/Reach.swift
+     * THe original code has been licensed under the MIT license and is free to use as is.
+     */
+    func isConnectedToInternet() -> Bool {
+        var address0 = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
+        address0.sin_len = UInt8(MemoryLayout<sockaddr_in>.size(ofValue: address0))
+        address0.sin_family = sa_family_t(AF_INET)
+        
+        guard let defaultRouteReachability = withUnsafePointer(to: &address0, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
+                SCNetworkReachabilityCreateWithAddress(nil, $0)
+            }
+        }) else {
+            return false
+        }
+        
+        var flags : SCNetworkReachabilityFlags = []
+        if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
+            return false
+        }
+        
+        let connectionRequired = flags.contains(.connectionRequired)
+        let isReachable = flags.contains(.reachable)
+        
+        if !connectionRequired && isReachable {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    /*
      * Toggles accuracy of CLLocationManager for power optimization
      */
     func toggleAccuracy() {
@@ -161,12 +215,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    /*
-     * Gets difference between two Date objects in hours
-     */
-    func getHourDifference(date1: Date, date2: Date) -> Int {
-        return Calendar.current.dateComponents([.hour], from: date1, to: date2).hour ?? 0
-    }
     
     //testing only
     func getMinuteDifference(date1: Date, date2: Date) -> Int {

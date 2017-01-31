@@ -12,18 +12,29 @@ import GoogleMaps
 
 class MapViewController: UIViewController {
 
-    var location: CLLocation!
+    var employeeCode: String!
+    var locationData: LocationData!
+    var colorPalette = ColorPalette()
     
     override func loadView() {
-        let camera = GMSCameraPosition.camera(withTarget: location.coordinate, zoom: 15.0)
-        let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        view = mapView
+        title = "Map"
         
-        let marker = GMSMarker()
-        marker.position = location.coordinate
-        marker.title = "Location"
-        marker.snippet = "Loc"
-        marker.map = mapView
+        navigationController?.navigationBar.barTintColor = colorPalette.colorPrimaryDarker
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: colorPalette.colorText]
+        tabBarController?.tabBar.barTintColor = colorPalette.colorPrimaryDark
+        tabBarController?.tabBar.tintColor = colorPalette.colorTextBox
+        navigationController?.navigationBar.tintColor = self.colorPalette.colorTextBox
+        if let location = locationData.location {
+            let camera = GMSCameraPosition.camera(withTarget: location.coordinate, zoom: 15.0)
+            let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+            view = mapView
+            
+            let marker = GMSMarker()
+            marker.position = location.coordinate
+            marker.title = "Hours spent here: "+String(locationData.timeAtLocation)
+            marker.snippet = "Employee "+employeeCode
+            marker.map = mapView
+        }
     }
     
     override func viewDidLoad() {
