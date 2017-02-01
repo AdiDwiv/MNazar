@@ -44,7 +44,7 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         responseLabel.textAlignment = .center
         responseLabel.minimumScaleFactor = 0.1
         responseLabel.adjustsFontSizeToFitWidth = true
-        view.addSubview(responseLabel)
+        
         //post-login table
         locationTableView = UITableView(frame: view.frame)
         locationTableView.dataSource = self
@@ -115,6 +115,7 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     self.passwordTextField.removeFromSuperview()
                     self.loginButton.removeFromSuperview()
                     self.logoImageView.removeFromSuperview()
+                    self.responseLabel.removeFromSuperview()
                     self.view.backgroundColor = self.colorPalette.colorPrimary
                 }, completion: { _ in
                     self.title = "Your locations"
@@ -140,6 +141,7 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         view.addSubview(passwordTextField)
         view.addSubview(loginButton)
         view.addSubview(logoImageView)
+        view.addSubview(responseLabel)
         title = "Login"
     }
     
