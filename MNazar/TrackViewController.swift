@@ -189,7 +189,7 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
     }
     
-    /* Logs user out at 7:00 PM
+    /* Logs user out at 7:00 PM and on sundays
      */
     func checkForEndTime(date: Date) -> Bool {
         let requestedComponents: Set<Calendar.Component> = [.hour, .weekday]
