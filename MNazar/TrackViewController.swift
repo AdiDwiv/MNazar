@@ -101,7 +101,9 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         addLoginElements()
     }
-    
+    /*
+     * Logs user in and starts updating location
+     */
     func login() {
         
         if let text1 = empCodeTextField.text {

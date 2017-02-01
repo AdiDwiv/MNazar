@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         
@@ -50,7 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         if loggedIn {
             locationManager.stopUpdatingLocation()
-            locationManager.pausesLocationUpdatesAutomatically = false
             locationManager.startUpdatingLocation()
         }
     }
@@ -73,10 +73,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     trackViewController.logout()
                     trackViewController.populateResponseLabel(code: 2)
                     loggedIn = false
+                    return
                 }
             }
             if loggedIn {
-                let hourDiff = getHourDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp)
+                let hourDiff = abs(getHourDifference(date1: location.timestamp, date2: lastLoggedLocation.timestamp))
                 let distance = location.distance(from: lastLoggedLocation)
                 if hourDiff >= 1 || distance >= 100 {
                     if locationManager.desiredAccuracy == kCLLocationAccuracyKilometer {
@@ -105,6 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if distance <= 100 && hourDiff >= 1 {
             if let location1 = trackViewController.locationList.last {
                 location1.timeAtLocation += hourDiff
+                location1.location = location
                 print(location1.timeAtLocation)
             }
         } else {
