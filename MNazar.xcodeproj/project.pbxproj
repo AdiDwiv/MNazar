@@ -113,6 +113,32 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		400C81041E419CD50025B1BC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				400C81001E413B490025B1BC /* ColorPalette.swift */,
+				40AF2B871E3FECDD002AC645 /* LocationData.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		400C81051E419D1D0025B1BC /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				40A3A9701E3A927800316F51 /* TrackViewController.swift */,
+				400C80D91E40D9E70025B1BC /* MapViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		400C81061E419D500025B1BC /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				40AF2B8B1E3FF4AC002AC645 /* TrackTableViewCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		40A3A9521E3A923000316F51 = {
 			isa = PBXGroup;
 			children = (
@@ -134,14 +160,12 @@
 			isa = PBXGroup;
 			children = (
 				40A3A95E1E3A923100316F51 /* AppDelegate.swift */,
+				400C81061E419D500025B1BC /* Cells */,
+				400C81051E419D1D0025B1BC /* ViewControllers */,
+				400C81041E419CD50025B1BC /* Model */,
 				40A3A9651E3A923100316F51 /* Assets.xcassets */,
 				40A3A9671E3A923100316F51 /* LaunchScreen.storyboard */,
 				40A3A96A1E3A923100316F51 /* Info.plist */,
-				40A3A9701E3A927800316F51 /* TrackViewController.swift */,
-				40AF2B871E3FECDD002AC645 /* LocationData.swift */,
-				40AF2B8B1E3FF4AC002AC645 /* TrackTableViewCell.swift */,
-				400C80D91E40D9E70025B1BC /* MapViewController.swift */,
-				400C81001E413B490025B1BC /* ColorPalette.swift */,
 				400C80E11E40DB9B0025B1BC /* GoogleMaps.bundle */,
 				400C80DF1E40DB1E0025B1BC /* GoogleMapsCore.framework */,
 				400C80DD1E40DB0B0025B1BC /* GoogleMaps.framework */,

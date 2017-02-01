@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+/* Defines palette for app
+ */
 class ColorPalette {
     var colorPrimaryDark = UIColor.init(red: 28/255, green: 117/255, blue: 188/255, alpha: 1)
     var colorPrimaryDarker = UIColor.init(red: 56/255, green: 117/255, blue: 215/255, alpha: 1)
