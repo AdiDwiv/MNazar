@@ -66,13 +66,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
      */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            // CHeck if it's time to auto logout
+            // Check if it's time to auto logout
             if trackViewController.checkForEndTime(date: location.timestamp) {
                 if locationStackTop == trackViewController.sizeOfList()-1 {
                   trackViewController.logout()
                 }
             }
-            
             if loggedIn {
                 let hourDiff = getHourDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp)
                 let distance = location.distance(from: lastLoggedLocation)
