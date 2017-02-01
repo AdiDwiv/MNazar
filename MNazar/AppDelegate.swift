@@ -142,7 +142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             timeAtPlace = lastLocation.timeAtLocation
         }
         
-        let dataDict = ["location-latitude": String(describing: location.coordinate.latitude), "location-longitude": String(describing: location.coordinate.longitude), "timeStamp": String(describing: location.timestamp), "distance": String(describing: trackViewController.totalDistance), "timeAtPlace": String(timeAtPlace)] as Dictionary<String, String>
+        let dataDict = ["Employee code:": trackViewController.employeeCode, "location-latitude": String(describing: location.coordinate.latitude), "location-longitude": String(describing: location.coordinate.longitude), "timeStamp": String(describing: location.timestamp), "distance": String(describing: trackViewController.totalDistance), "timeAtPlace": String(timeAtPlace)] as Dictionary<String, String>
         let jsonObj: Data
         
         if let url = URL(string: "serverURL") {
