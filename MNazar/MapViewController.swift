@@ -32,7 +32,7 @@ class MapViewController: UIViewController {
             let marker = GMSMarker()
             marker.position = location.coordinate
             marker.title = "Hours spent here: "+String(locationData.timeAtLocation)
-            marker.snippet = "Employee "+employeeCode
+            marker.snippet = "Employee: "+employeeCode
             marker.map = mapView
         }
     }

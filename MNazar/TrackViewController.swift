@@ -43,18 +43,20 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         locationTableView.delegate = self
         locationTableView.tableFooterView = UIView()
         locationTableView.rowHeight = view.frame.height*0.125
-        
+        locationTableView.backgroundColor = UIColor.white.withAlphaComponent(0)
         //pre-login screen
-        logoLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.75, height: view.frame.height*0.20))
-        logoLabel.center = CGPoint(x: view.frame.width*0.35, y: view.frame.height*0.30)
+        logoLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.80, height: view.frame.height*0.20))
+        logoLabel.center = CGPoint(x: view.frame.width*0.40, y: view.frame.height*0.30)
         logoLabel.text = "mNazar"
         logoLabel.textColor = colorPalette.colorPrimaryDarker
         logoLabel.font = UIFont.boldSystemFont(ofSize: 65)
         logoLabel.backgroundColor = UIColor.white.withAlphaComponent(0)
         logoLabel.textAlignment = .center
+        logoLabel.minimumScaleFactor = 0.1
+        logoLabel.adjustsFontSizeToFitWidth = true
         
-        logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.25, height: view.frame.height*0.10))
-        logoImageView.center = CGPoint(x: view.frame.width*0.80, y: view.frame.height*0.30)
+        logoImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.20, height: view.frame.height*0.10))
+        logoImageView.center = CGPoint(x: view.frame.width*0.90, y: view.frame.height*0.30)
         logoImageView.image = UIImage(named: "location_logo.png")
         
         empCodeTextField = UITextField(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.85, height: view.frame.height*0.05))
@@ -81,7 +83,7 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         passwordTextField.textColor = colorPalette.colorText
         password = ""
         
-        loginButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.175, height: view.frame.height*0.05))
+        loginButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.25, height: view.frame.height*0.075))
         loginButton.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.7125)
         loginButton.setTitleColor(colorPalette.colorText, for: .normal)
         loginButton.backgroundColor = colorPalette.colorPrimaryDarker
@@ -98,15 +100,18 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
             employeeCode = text1
         }
         if employeeCode.characters.count>0 && password.characters.count>0 {
-            UIView.animate(withDuration: 0.5, animations: {
+            UIView.animate(withDuration: 0.25, animations: {
                 self.logoLabel.removeFromSuperview()
                 self.empCodeTextField.removeFromSuperview()
                 self.passwordTextField.removeFromSuperview()
                 self.loginButton.removeFromSuperview()
                 self.logoImageView.removeFromSuperview()
-                self.view.backgroundColor = .white
+                self.view.backgroundColor = self.colorPalette.colorPrimary
             }, completion: { _ in
                 self.title = "Your locations"
+                UIView.animate(withDuration: 0.125, animations: {
+                    self.view.backgroundColor = self.colorPalette.colorText
+                })
                 self.view.addSubview(self.locationTableView)
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(self.logout))
                 self.navigationItem.rightBarButtonItem?.tintColor = self.colorPalette.colorTextBox
@@ -126,15 +131,21 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         title = "Login"
     }
     
+    /* Logs user out and stops updating location
+     */
     func logout() {
-        UIView.animate(withDuration: 0.5, animations: {
-            self.locationTableView.removeFromSuperview()
+        UIView.animate(withDuration: 0.125, animations: {
             self.locationManager.stopUpdatingLocation()
+            self.locationTableView.removeFromSuperview()
             self.view.backgroundColor = self.colorPalette.colorText
             self.navigationItem.rightBarButtonItem = nil
+            self.view.backgroundColor = self.colorPalette.colorPrimary
         }, completion: { _ in
             self.password = ""
             self.employeeCode = ""
+            UIView.animate(withDuration: 0.25, animations: {
+                self.view.backgroundColor = self.colorPalette.colorText
+            })
             self.addLoginElements()
         })
     }
@@ -163,6 +174,8 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         locationTableView.reloadData()
     }
     
+    /* Changes text in password field to ***
+     */
     func passwordFieldChanged() {
         if let text = passwordTextField.text {
             password = text
@@ -174,6 +187,19 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
             passwordTextField.text = asteriskText
         }
+    }
+    
+    /* Logs user out at 7:00 PM
+     */
+    func checkForEndTime(date: Date) -> Bool {
+        let requestedComponents: Set<Calendar.Component> = [.hour]
+        let timeComponents = Calendar.current.dateComponents(requestedComponents, from: date)
+        if let hours = timeComponents.hour {
+            if hours >= 19 {
+                return true
+            }
+        }
+        return false
     }
     
     override func viewWillAppear(_ animated: Bool) {

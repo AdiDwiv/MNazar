@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         
         
@@ -65,8 +65,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
      * Called whenever phone receives a location
      */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(isConnectedToInternet())
         if let location = locations.last {
+            // CHeck if it's time to auto logout
+            if trackViewController.checkForEndTime(date: location.timestamp) {
+                if locationStackTop == trackViewController.sizeOfList()-1 {
+                  trackViewController.logout()
+                }
+            }
+            
             if loggedIn {
                 let hourDiff = getHourDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp)
                 let distance = location.distance(from: lastLoggedLocation)
@@ -93,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
      * locationStackTop stores index in locationList upto which data has been sent to the server
      */
     func updateLocation(location: CLLocation, distance: CLLocationDistance, hourDiff: Int) {
-    
+        
         if distance <= 200 && hourDiff >= 1 {
             if let location1 = trackViewController.locationList.last {
                 location1.timeAtLocation += hourDiff
@@ -210,7 +216,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
             break
         case kCLLocationAccuracyThreeKilometers:
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
         default: break
         }
     }

@@ -31,6 +31,7 @@ class TrackTableViewCell: UITableViewCell {
         
         timeLabel.textColor = .darkGray
         timeLabel.text = "At: "
+        backgroundColor = UIColor.white.withAlphaComponent(0)
         
         addSubview(timeLabel)
         addSubview(distanceLabel)
@@ -44,10 +45,15 @@ class TrackTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        timeLabel.frame = CGRect(x: frame.width*0.20, y: frame.height*0.225, width: frame.width*0.85, height: frame.height*0.25)
-        timeLabel.font = UIFont.systemFont(ofSize: 20)
-        distanceLabel.frame = CGRect(x: frame.width*0.20, y: frame.height*0.5, width: frame.width*0.85, height: frame.height*0.5)
-        distanceLabel.font = UIFont.systemFont(ofSize: 22)
+        timeLabel.frame = CGRect(x: frame.width*0.20, y: frame.height*0.225, width: frame.width*0.65, height: frame.height*0.25)
+        timeLabel.font = UIFont.systemFont(ofSize: 17)
+        timeLabel.minimumScaleFactor = 0.1
+        timeLabel.adjustsFontSizeToFitWidth = true
+        
+        distanceLabel.frame = CGRect(x: frame.width*0.20, y: frame.height*0.5, width: frame.width*0.65, height: frame.height*0.5)
+        distanceLabel.font = UIFont.systemFont(ofSize: 19)
+        distanceLabel.minimumScaleFactor = 0.1
+        distanceLabel.adjustsFontSizeToFitWidth = true
         
         logoImageView.frame =  CGRect(x: frame.width*0.05, y: 0, width: frame.width*0.1, height: frame.height*0.5)
         logoImageView.center.y = frame.height*0.5
