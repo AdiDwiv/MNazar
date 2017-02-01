@@ -80,10 +80,10 @@ class TrackTableViewCell: UITableViewCell {
         } else {
             distanceLabel.text = "Distance travelled: "+String(distance/1000)+"km"
         }
-        if colorcodeTime <= 2 {
+        if colorcodeTime <= 1 {
             timeColorImageView.backgroundColor = UIColor.green.withAlphaComponent(0.5)
         }
-        else if colorcodeTime <= 4 {
+        else if colorcodeTime <= 3 {
             timeColorImageView.backgroundColor = UIColor.yellow.withAlphaComponent(0.5)
         }
         else {
