@@ -26,6 +26,7 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
     var loginButton: UIButton!
     
     var employeeCode: String!
+    var loggedIn: Bool = false
     var colorPalette = ColorPalette()
     
     override func viewDidLoad() {
@@ -105,7 +106,6 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
      * Logs user in and starts updating location
      */
     func login() {
-        
         if let text1 = empCodeTextField.text {
             employeeCode = text1
         }
@@ -150,6 +150,7 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
     /* Logs user out and stops updating location
      */
     func logout() {
+        loggedIn = false
         UIView.animate(withDuration: 0.125, animations: {
             self.locationManager.stopUpdatingLocation()
             self.locationTableView.removeFromSuperview()

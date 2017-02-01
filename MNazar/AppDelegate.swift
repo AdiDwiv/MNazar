@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
     var window: UIWindow?
     var locationManager: CLLocationManager!
-    var loggedIn: Bool = false
+    //var loggedIn: Bool = false
     var locationStackTop : Int = -1
     
     var lastLoggedLocation: CLLocation!
@@ -63,11 +63,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 if locationStackTop == trackViewController.sizeOfList()-1 {
                     trackViewController.logout()
                     trackViewController.populateResponseLabel(code: 2)
-                    loggedIn = false
                     return
                 }
             }
-            if loggedIn {
+            if trackViewController.loggedIn {
                 let hourDiff = abs(getHourDifference(date1: location.timestamp, date2: lastLoggedLocation.timestamp))
                 let distance = location.distance(from: lastLoggedLocation)
                 if hourDiff >= 1 || distance >= 100 {
@@ -80,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     }
                 }
             } else {
-                loggedIn = true
+                trackViewController.loggedIn = true
                 updateLocation(location: location, distance: 0, hourDiff: 0)
             }
         }
@@ -95,8 +94,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func updateLocation(location: CLLocation, distance: CLLocationDistance, hourDiff: Int) {
         
         // returns if location is a cached location
-        if getSecondDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp)<0 {
-            return
+        if let lastLocation = lastLoggedLocation {
+            if getSecondDifference(date1: lastLocation.timestamp, date2: location.timestamp)<0 {
+                return
+            }
         }
         
         if distance <= 100 && hourDiff >= 1 {
