@@ -48,10 +48,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        
-        locationManager.stopUpdatingLocation()
-        locationManager.pausesLocationUpdatesAutomatically = false
-        locationManager.startUpdatingLocation()
+        if loggedIn {
+            locationManager.stopUpdatingLocation()
+            locationManager.pausesLocationUpdatesAutomatically = false
+            locationManager.startUpdatingLocation()
+        }
     }
     
     /*
@@ -69,14 +70,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             // Check if it's time to auto logout
             if trackViewController.checkForEndTime(date: location.timestamp) {
                 if locationStackTop == trackViewController.sizeOfList()-1 {
-                  trackViewController.logout()
+                    trackViewController.logout()
+                    trackViewController.populateResponseLabel(code: 2)
+                    loggedIn = false
                 }
             }
             if loggedIn {
                 let hourDiff = getHourDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp)
                 let distance = location.distance(from: lastLoggedLocation)
-                if hourDiff >= 1 || distance >= 200 {
-                    if locationManager.desiredAccuracy == kCLLocationAccuracyThreeKilometers {
+                if hourDiff >= 1 || distance >= 100 {
+                    if locationManager.desiredAccuracy == kCLLocationAccuracyKilometer {
                         toggleAccuracy()
                     }
                     else {
@@ -99,13 +102,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
      */
     func updateLocation(location: CLLocation, distance: CLLocationDistance, hourDiff: Int) {
         
-        if distance <= 200 && hourDiff >= 1 {
+        if distance <= 100 && hourDiff >= 1 {
             if let location1 = trackViewController.locationList.last {
                 location1.timeAtLocation += hourDiff
                 print(location1.timeAtLocation)
             }
         } else {
-                if distance >= 200 {
+                if distance >= 100 {
                 trackViewController.totalDistance += distance
             }
             trackViewController.locationList.append(LocationData(location: location, distanceTravelled: trackViewController.totalDistance))
@@ -212,9 +215,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func toggleAccuracy() {
         switch locationManager.desiredAccuracy {
         case kCLLocationAccuracyBest:
-            locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
             break
-        case kCLLocationAccuracyThreeKilometers:
+        case kCLLocationAccuracyKilometer:
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
         default: break
         }
