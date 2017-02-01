@@ -31,8 +31,12 @@ class MapViewController: UIViewController {
             
             let marker = GMSMarker()
             marker.position = location.coordinate
-            marker.title = "Hours spent here: "+String(locationData.timeAtLocation)
-            marker.snippet = "Employee: "+employeeCode
+            if locationData.timeAtLocation < 1 {
+                marker.title = "Hours spent here: <1"
+            } else {
+                marker.title = "Hours spent here: "+String(locationData.timeAtLocation)
+            }
+            marker.snippet = "Employee code: "+employeeCode
             marker.map = mapView
         }
     }
