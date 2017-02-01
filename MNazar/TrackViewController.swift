@@ -46,7 +46,7 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         responseLabel.adjustsFontSizeToFitWidth = true
         
         //post-login table
-        locationTableView = UITableView(frame: view.frame)
+        locationTableView = UITableView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height))
         locationTableView.dataSource = self
         locationTableView.delegate = self
         locationTableView.tableFooterView = UIView()

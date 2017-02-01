@@ -42,18 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let navigationController = UINavigationController(rootViewController:trackViewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-
+        
         return true
     }
-
-//    func applicationWillResignActive(_ application: UIApplication) {
-//        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-//        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-//        if loggedIn {
-//            locationManager.stopUpdatingLocation()
-//            locationManager.startUpdatingLocation()
-//        }
-//    }
     
     /*
      * Gets difference between two Date objects in hours
@@ -102,6 +93,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
      * locationStackTop stores index in locationList upto which data has been sent to the server
      */
     func updateLocation(location: CLLocation, distance: CLLocationDistance, hourDiff: Int) {
+        
+        // returns if location is a cached location
+        if getSecondDifference(date1: lastLoggedLocation.timestamp, date2: location.timestamp)<0 {
+            return
+        }
         
         if distance <= 100 && hourDiff >= 1 {
             if let location1 = trackViewController.locationList.last {
