@@ -59,34 +59,32 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         empCodeTextField = UITextField(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.85, height: view.frame.height*0.05))
         empCodeTextField.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.55)
-        empCodeTextField.attributedPlaceholder =  NSAttributedString(string: "Employee code", attributes: [NSForegroundColorAttributeName: colorPalette.colorText.withAlphaComponent(0.85)])
+        empCodeTextField.attributedPlaceholder =  NSAttributedString(string: " Employee code", attributes: [NSForegroundColorAttributeName: colorPalette.colorText.withAlphaComponent(0.85)])
         empCodeTextField.layer.borderWidth = 0.25
-        empCodeTextField.layer.cornerRadius = 8
+        empCodeTextField.layer.cornerRadius = 5
         empCodeTextField.backgroundColor = UIColor.white.withAlphaComponent(0.35)
-        empCodeTextField.font = UIFont.boldSystemFont(ofSize: 16)
+       // empCodeTextField.font = UIFont.systemFont(ofSize: 16)
         empCodeTextField.delegate = self
         empCodeTextField.backgroundColor = colorPalette.colorPrimaryDarker
-        empCodeTextField.textAlignment = .center
         empCodeTextField.textColor = colorPalette.colorText
         
         passwordTextField = UITextField(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.85, height: view.frame.height*0.05))
-        passwordTextField.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.625)
-        passwordTextField.attributedPlaceholder =  NSAttributedString(string: "Password", attributes: [NSForegroundColorAttributeName: colorPalette.colorText.withAlphaComponent(0.85)])
+        passwordTextField.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.605)
+        passwordTextField.attributedPlaceholder =  NSAttributedString(string: " Password", attributes: [NSForegroundColorAttributeName: colorPalette.colorText.withAlphaComponent(0.85)])
         passwordTextField.layer.borderWidth = 0.25
-        passwordTextField.layer.cornerRadius = 8
+        passwordTextField.layer.cornerRadius = 5
         passwordTextField.backgroundColor = UIColor.white.withAlphaComponent(0.35)
-        passwordTextField.font = UIFont.boldSystemFont(ofSize: 16)
+       // passwordTextField.font = UIFont.systemFont(ofSize: 16)
         passwordTextField.delegate = self
         passwordTextField.addTarget(self, action: #selector(passwordFieldChanged), for: .editingChanged)
         passwordTextField.backgroundColor = colorPalette.colorPrimaryDarker
-        passwordTextField.textAlignment = .center
         passwordTextField.textColor = colorPalette.colorText
         password = ""
         
-        loginButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.15, height: view.frame.height*0.05))
-        loginButton.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.75)
+        loginButton = UIButton(frame: CGRect(x: 0, y: 0, width: view.frame.width*0.175, height: view.frame.height*0.05))
+        loginButton.center = CGPoint(x: view.frame.width*0.5, y: view.frame.height*0.7125)
         loginButton.setTitleColor(colorPalette.colorText, for: .normal)
-        loginButton.backgroundColor = colorPalette.colorPrimaryDark
+        loginButton.backgroundColor = colorPalette.colorPrimaryDarker
         loginButton.setTitle("Login", for: .normal)
         loginButton.layer.cornerRadius = 8
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
@@ -149,7 +147,7 @@ class TrackViewController: UIViewController, CLLocationManagerDelegate, UITableV
         let cell = TrackTableViewCell(style: .default, reuseIdentifier: "Reuse")
         let size = locationList.count
         let locationData = locationList[size-indexPath.row-1]
-        cell.setup(labelDate: locationData.location.timestamp, colorcodeTime: locationData.timeAtLocation, distance: String(describing: locationData.distanceTravelled))
+        cell.setup(labelDate: locationData.location.timestamp, colorcodeTime: locationData.timeAtLocation, distance: Int(locationData.distanceTravelled))
         return cell
     }
     

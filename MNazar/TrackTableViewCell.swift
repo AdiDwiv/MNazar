@@ -44,8 +44,10 @@ class TrackTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        timeLabel.frame = CGRect(x: frame.width*0.20, y: 0, width: frame.width*0.5, height: frame.height*0.5)
-        distanceLabel.frame = CGRect(x: frame.width*0.20, y: frame.height*0.5, width: frame.width*0.5, height: frame.height*0.5)
+        timeLabel.frame = CGRect(x: frame.width*0.20, y: frame.height*0.225, width: frame.width*0.85, height: frame.height*0.25)
+        timeLabel.font = UIFont.systemFont(ofSize: 20)
+        distanceLabel.frame = CGRect(x: frame.width*0.20, y: frame.height*0.5, width: frame.width*0.85, height: frame.height*0.5)
+        distanceLabel.font = UIFont.systemFont(ofSize: 22)
         
         logoImageView.frame =  CGRect(x: frame.width*0.05, y: 0, width: frame.width*0.1, height: frame.height*0.5)
         logoImageView.center.y = frame.height*0.5
@@ -56,7 +58,7 @@ class TrackTableViewCell: UITableViewCell {
         timeColorImageView.center.y = frame.height*0.5
     }
     
-    func setup(labelDate: Date, colorcodeTime: Int, distance: String) {
+    func setup(labelDate: Date, colorcodeTime: Int, distance: Int) {
         let requestedComponents: Set<Calendar.Component> = [.hour, .minute]
         let timeComponents = Calendar.current.dateComponents(requestedComponents, from: labelDate)
         var label = ""
@@ -67,7 +69,11 @@ class TrackTableViewCell: UITableViewCell {
             label += minutes/10 < 1 ? ":0" + String(minutes) : ":" + String(minutes)
         }
         timeLabel.text = "At "+label
-        distanceLabel.text = "Distance: "+distance
+        if distance < 1000 {
+            distanceLabel.text = "Distance travelled: "+String(distance)+"m"
+        } else {
+            distanceLabel.text = "Distance travelled: "+String(distance/1000)+"km"
+        }
         if colorcodeTime <= 2 {
             timeColorImageView.backgroundColor = UIColor.green.withAlphaComponent(0.5)
         }
