@@ -125,8 +125,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if isConnectedToInternet() {
             while locationStackTop < trackViewController.sizeOfList()-1 {
                 locationStackTop += 1
-                if let location = trackViewController.locationList[locationStackTop].location {
-                    // sendDataToServer(location: location)
+                if let location1 = trackViewController.locationList[locationStackTop].location {
+                    // sendDataToServer(location: location1)
                 }
             }
         }
