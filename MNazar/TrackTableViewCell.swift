@@ -79,7 +79,7 @@ class TrackTableViewCell: UITableViewCell {
             distanceLabel.text = "Distance travelled: "+String(distance)+"m"
         } else {
             let distancekm = Double(distance/100)
-            distanceLabel.text = "Distance travelled: "+String(Double(round(distancekm)/10))+"km"
+            distanceLabel.text = "Distance travelled: "+String(round(distancekm)/10)+"km"
         }
         if colorcodeTime < 1 {
             timeColorImageView.backgroundColor = UIColor.green.withAlphaComponent(0.5)

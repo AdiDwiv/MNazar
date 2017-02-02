@@ -54,6 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     /*
+     * Gets difference between two Date objects in seconds
+     */
+    func getSecondDifference(date1: Date, date2: Date) -> Int {
+        return Calendar.current.dateComponents([.second], from: date1, to: date2).second ?? 0
+    }
+    
+    /*
      * Called whenever phone receives a location
      */
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -70,7 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 let hourDiff = abs(getHourDifference(date1: location.timestamp, date2: lastLoggedLocation.timestamp))
                 let distance = location.distance(from: lastLoggedLocation)
                 if hourDiff >= 1 || distance >= 100 {
-                    if locationManager.desiredAccuracy == kCLLocationAccuracyKilometer {
+                    if locationManager.desiredAccuracy == kCLLocationAccuracyNearestTenMeters {
                         toggleAccuracy()
                     }
                     else {
@@ -95,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // returns if location is a cached location
         if let lastLocation = lastLoggedLocation {
-            if getSecondDifference(date1: lastLocation.timestamp, date2: location.timestamp)<0 {
+            if getSecondDifference(date1: lastLocation.timestamp, date2: location.timestamp)<1 {
                 return
             }
         }
@@ -103,7 +110,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if distance <= 100 && hourDiff >= 1 {
             if let location1 = trackViewController.locationList.last {
                 location1.timeAtLocation += hourDiff
-                location1.location = location
                 print(location1.timeAtLocation)
             }
         } else {
@@ -214,9 +220,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func toggleAccuracy() {
         switch locationManager.desiredAccuracy {
         case kCLLocationAccuracyBest:
-            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             break
-        case kCLLocationAccuracyKilometer:
+        case kCLLocationAccuracyNearestTenMeters:
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
         default: break
         }
@@ -226,12 +232,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //testing only
     func getMinuteDifference(date1: Date, date2: Date) -> Int {
         return Calendar.current.dateComponents([.minute], from: date1, to: date2).minute ?? 0
-    }
-    
-    
-    //testing only
-    func getSecondDifference(date1: Date, date2: Date) -> Int {
-        return Calendar.current.dateComponents([.second], from: date1, to: date2).second ?? 0
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
