@@ -2,7 +2,7 @@
 
 ![Alt text](https://cloud.githubusercontent.com/assets/22662617/22573976/e38b12d8-e979-11e6-8052-3d075fb0bd00.jpg)
 ### General information
-* Mnazar is an iOS tracking app for sales employees.  
+* MNazar is an iOS tracking app for sales employees.  
 * Developed by Aditya Dwivedi (ad629@cornell.edu).
 * MNazar tracks the location of an employee and sends the collected data to a server. This information can be viewed by the employee's superviser. 
 * MNazar uses the Google Maps SDK for iOS to display locations.
