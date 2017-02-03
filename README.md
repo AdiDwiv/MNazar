@@ -4,7 +4,7 @@
 ### General information
 * MNazar is an iOS tracking app for sales employees.  
 * Developed by Aditya Dwivedi (ad629@cornell.edu).
-* MNazar tracks the location of an employee and sends the collected data to a server. This information can be viewed by the employee's superviser. 
+* MNazar tracks the location of an employee and sends the collected data to a server. This information can be viewed by the employee's supervisor. 
 * MNazar uses the Google Maps SDK for iOS to display locations.
 * MNazar also keeps a record of the total distance travelled by the employee.
 * MNazar can be run in the background and does not need to remain open at all times.
@@ -14,8 +14,8 @@
 
 ![Alt text](https://cloud.githubusercontent.com/assets/22662617/22573990/f3dce67a-e979-11e6-8410-836f7993ab03.jpg)
  * Users login using their employee id and password. 
- * They can logout at any given time. The server will stop receiving their location upon logout.
- * The app logs the user out automatically at 7 P.M. local time i.e. at the end of shift.
+ * They can log out at any given time. The server will stop receiving their location upon logout.
+ * The app logs the user out automatically at 7 P.M. local time i.e. at the end of their shift.
  * Users cannot login after 7 P.M. or on Sundays.
 
 #### 2. Location tracking
